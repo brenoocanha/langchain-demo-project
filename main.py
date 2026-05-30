@@ -41,4 +41,8 @@ agent = create_tool_calling_agent(
 
 agent_executor = AgentExecutor(agent=agent, tools=[], verbose=True)
 raw_response = agent_executor.invoke({ "query": "What is the capital of France?" })
-print(raw_response)
+
+try:
+    structured_response = parser.parse(raw_response.get("output")[0]["text"])
+except Exception as e:
+    print("Error parsing response", e, "Raw Response - ", raw_response)
